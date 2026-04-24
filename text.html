@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIP4F - Premium Mod Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --bg-main: #090b10;
+            --bg-card: #141721;
+            --text-main: #ffffff;
+        }
+
+        .light-mode {
+            --bg-main: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #111827;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .app-card {
+            background-color: var(--bg-card);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        
+        .light-mode .app-card {
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-panel {
+            background: rgba(20, 23, 33, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .light-mode .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .search-active {
+            width: 100% !important;
+            padding-left: 1rem !important;
+        }
+
+        /* Video Container Styling */
+        .video-frame {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .video-frame iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="pb-10">
+
+    <!-- Store Header -->
+    <div id="storeView">
+        <header class="p-6 sticky top-0 z-50 glass-panel flex justify-between items-center">
+            <div id="headerTitle">
+                <p class="text-indigo-500 text-[10px] font-extrabold uppercase tracking-[0.2em] mb-0.5">Premium App Center</p>
+                <h1 class="text-2xl font-black tracking-tight">VIP4F <span class="text-indigo-500">PRO</span></h1>
+            </div>
+            
+            <!-- Search & Theme Bar -->
+            <div id="searchWrapper" class="flex-1 flex justify-end items-center gap-3">
+                <div id="searchContainer" class="relative overflow-hidden transition-all duration-300 w-10 h-10 flex items-center">
+                    <input type="text" id="searchInput" placeholder="Search apps..." 
+                        class="hidden w-full bg-white/5 border border-white/10 rounded-xl py-2 px-4 text-sm focus:outline-none focus:border-indigo-500">
+                    <button id="searchBtn" onclick="toggleSearch()" class="w-10 h-10 shrink-0 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 active:scale-90 transition">
+                        <i class="fa-solid fa-magnifying-glass text-indigo-500 text-sm"></i>
+                    </button>
+                </div>
+                
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 active:scale-90 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon text-gray-400 text-sm"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="px-6 py-6">
+            <!-- Video Frame Section (New) -->
+            <section class="mb-8">
+                <div class="video-frame shadow-2xl">
+                    <!-- Replace VIDEO_ID with your YouTube ID -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                        title="App Preview" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </section>
+
+            <!-- Featured Banner -->
+            <section id="bannerSection" class="mb-8 rounded-[2rem] overflow-hidden relative h-40 bg-gradient-to-br from-indigo-600 to-purple-700 p-6 flex flex-col justify-end">
+                <div class="absolute top-[-20%] left-[-10%] w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+                <span class="bg-black/20 backdrop-blur-md text-[10px] font-bold py-1 px-3 rounded-full w-fit mb-2 uppercase tracking-wider">Update 2.5 Live</span>
+                <h2 class="text-xl font-black leading-tight text-white">Unlock Everything.<br>No Limits.</h2>
+            </section>
+
+            <!-- Trending Horizontal -->
+            <section id="trendingSection" class="mb-10">
+                <div class="flex justify-between items-end mb-5">
+                    <h2 class="text-lg font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-bolt-lightning text-yellow-400"></i> Trending Apps
+                    </h2>
+                </div>
+                <div id="trending-container" class="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-2 px-2"></div>
+            </section>
+
+            <!-- Main App List -->
+            <section class="mb-10">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-lg font-bold">All Applications</h2>
+                    <span id="resultsCount" class="text-xs text-gray-500"></span>
+                </div>
+                <div id="apps-list-container" class="grid grid-cols-1 gap-3"></div>
+            </section>
+
+            <!-- Credits Section -->
+            <footer class="mt-20 border-t border-white/5 pt-10 pb-10 text-center opacity-60">
+                <div class="flex justify-center gap-4 mb-4">
+                    <i class="fa-brands fa-telegram text-xl"></i>
+                    <i class="fa-brands fa-twitter text-xl"></i>
+                    <i class="fa-brands fa-discord text-xl"></i>
+                </div>
+                <p class="text-xs font-bold uppercase tracking-widest mb-1">Developed by VIP4F Team</p>
+                <p class="text-[10px]">All Rights Reserved &copy; 2024</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- App Details Modal -->
+    <div id="appDetailsModal" class="fixed inset-0 z-[100] hidden flex-col justify-end bg-black/90 backdrop-blur-md">
+        <div class="modal-content bg-[#0f1219] w-full h-[92vh] rounded-t-[3rem] relative flex flex-col overflow-hidden animate-slide-up border-t border-white/10 shadow-2xl">
+            <div onclick="closeDetails()" class="w-16 h-1.5 bg-gray-800 rounded-full mx-auto mt-4 mb-2"></div>
+            
+            <div class="h-56 w-full relative shrink-0">
+                <img id="detailHeaderImg" src="" class="w-full h-full object-cover opacity-40 blur-xl">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0f1219] via-[#0f1219]/50 to-transparent"></div>
+                <button onclick="closeDetails()" class="absolute top-4 right-6 z-20 w-12 h-12 bg-white/10 backdrop-blur-xl text-white rounded-2xl flex items-center justify-center border border-white/10 active:scale-90 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="px-8 relative -mt-24 flex items-end gap-6">
+                <img id="detailAppImg" src="" class="w-32 h-32 rounded-[2.5rem] shadow-2xl object-cover border-4 border-[#0f1219] z-10">
+                <div class="pb-4 z-10">
+                    <div class="flex items-center gap-2 mb-2">
+                         <span class="bg-indigo-600/20 text-indigo-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-indigo-600/30">Verified</span>
+                    </div>
+                    <h2 id="detailAppName" class="text-3xl font-black text-white truncate leading-none">App Name</h2>
+                </div>
+            </div>
+
+            <div class="px-8 mt-10 grid grid-cols-3 gap-1 py-6 text-center bg-white/5 rounded-[2rem] mx-8 border border-white/5">
+                <div><span id="detailAppRating" class="text-white font-extrabold text-lg">4.9 ★</span><br><span class="text-[10px] text-gray-500 font-bold uppercase">Rating</span></div>
+                <div class="border-x border-white/10"><span id="detailAppSize" class="text-white font-extrabold text-lg">120MB</span><br><span class="text-[10px] text-gray-500 font-bold uppercase">Size</span></div>
+                <div><span class="text-white font-extrabold text-lg">v8.2</span><br><span class="text-[10px] text-gray-500 font-bold uppercase">Version</span></div>
+            </div>
+
+            <div class="px-8 mt-8 flex-1 overflow-y-auto no-scrollbar pb-40">
+                <h3 class="text-white font-bold text-xl mb-4">Mod Features</h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="bg-white/5 p-4 rounded-2xl flex items-center gap-4 border border-white/5">
+                        <div class="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400">
+                            <i class="fa-solid fa-unlock"></i>
+                        </div>
+                        <span class="text-sm text-gray-300 font-medium">Unlocked Premium Features</span>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-2xl flex items-center gap-4 border border-white/5">
+                        <div class="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400">
+                            <i class="fa-solid fa-ban"></i>
+                        </div>
+                        <span class="text-sm text-gray-300 font-medium">Ad-Free Experience</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full p-8 glass-panel border-t border-white/5">
+                <button onclick="startDownload()" class="w-full bg-indigo-600 text-white font-black py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3 active:scale-95 transition text-lg">
+                    <i class="fa-solid fa-download"></i> Download Mod Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Modal -->
+    <div id="downloadProgressModal" class="fixed inset-0 z-[120] hidden bg-[#090b10] flex-col items-center justify-center p-10">
+        <div class="text-center">
+            <h3 id="progAppName" class="text-2xl font-black mb-4"></h3>
+            <div class="text-6xl font-black text-indigo-500 mb-2" id="progressText">0%</div>
+            <p id="progressStatus" class="text-sm text-gray-500 font-bold uppercase tracking-widest">Connecting to server...</p>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verificationScreen" class="fixed inset-0 z-[150] hidden bg-[#090b10] flex flex-col items-center overflow-y-auto px-6 pt-12 text-center">
+        <h2 class="text-3xl font-black mb-4">Almost Done!</h2>
+        <p class="text-gray-400 mb-10">Please complete one offer to verify you are a human and unlock the link.</p>
+        <button onclick="openLocker()" class="w-full bg-indigo-600 text-white font-black py-5 rounded-2xl mb-4">Verify Now</button>
+    </div>
+
+    <script>
+        const LOCKER_URL = "https://appchecker.space/cl/i/w6j831";
+
+        const appsData = [
+            { id: 1, name: "YouTube Premium", size: "55MB", rating: "5.0", img: "https://i.postimg.cc/Kkny0rDc/0e3b94a92152d146429e9e468cdd62d6.jpg" },
+            { id: 2, name: "8 Ball Pool Mega", size: "120MB", rating: "4.7", img: "https://i.postimg.cc/34gHtCF4/0efe52004ad1ee560b422918cadee0c7.jpg" },
+            { id: 3, name: "Netflix Mod", size: "80MB", rating: "4.9", img: "https://i.postimg.cc/cgQNFMBC/176fc791750a45f06395864a05e8f5ee.jpg" },
+            { id: 4, name: "TikTok Unlocked", size: "150MB", rating: "4.8", img: "https://i.postimg.cc/xJKS6y39/2906cfdc7de398d677bac2e6825cf707.jpg" },
+            { id: 5, name: "ChatGPT Pro", size: "40MB", rating: "5.0", img: "https://i.postimg.cc/dk8K5mjV/2b7b2738a8b5557fc284e3ec67c22769.jpg" },
+            { id: 6, name: "CarX Street Mod", size: "1.8GB", rating: "4.9", img: "https://i.postimg.cc/bDQjmH92/490bf914b7d9730c17166f9d4272e99b.jpg" },
+            { id: 7, name: "PUBG Mobile Hack", size: "2.1GB", rating: "4.8", img: "https://i.postimg.cc/zbn1xSFH/516a74d6d701c86c007f668d7cf2891a.jpg" },
+            { id: 8, name: "Snapchat Plus", size: "110MB", rating: "4.7", img: "https://i.postimg.cc/HcQC649x/a57f81feccd968c8951f48d862af8b72.jpg" },
+            { id: 9, name: "Spotify Premium", size: "65MB", rating: "5.0", img: "https://i.postimg.cc/34gHtCFy/b1ed9e158c5d8436b2af98522a8e1881.jpg" },
+            { id: 10, name: "CapCut Mod Pro", size: "95MB", rating: "4.9", img: "https://i.postimg.cc/xJKS6y39/2906cfdc7de398d677bac2e6825cf707.jpg" }
+        ];
+
+        let selectedApp = null;
+        let isSearchOpen = false;
+
+        function initStore(filter = "") {
+            const trendingBox = document.getElementById('trending-container');
+            const appsListBox = document.getElementById('apps-list-container');
+            const resultsCount = document.getElementById('resultsCount');
+            const trendingSection = document.getElementById('trendingSection');
+            const bannerSection = document.getElementById('bannerSection');
+            
+            appsListBox.innerHTML = '';
+            const filteredApps = appsData.filter(app => app.name.toLowerCase().includes(filter.toLowerCase()));
+            
+            if(filter !== "") {
+                trendingSection.classList.add('hidden');
+                bannerSection.classList.add('hidden');
+                resultsCount.innerText = `${filteredApps.length} results`;
+            } else {
+                trendingSection.classList.remove('hidden');
+                bannerSection.classList.remove('hidden');
+                resultsCount.innerText = '';
+                
+                trendingBox.innerHTML = '';
+                appsData.slice(0, 5).forEach(app => {
+                    const appJson = JSON.stringify(app).replace(/'/g, "&apos;");
+                    trendingBox.innerHTML += `
+                    <div onclick='openDetails(${appJson})' class="min-w-[130px] app-card p-5 rounded-[2.5rem] flex flex-col items-center">
+                        <img src="${app.img}" class="w-16 h-16 rounded-[1.5rem] mb-4 object-cover shadow-xl border border-white/5">
+                        <h3 class="font-bold text-xs text-center truncate w-full mb-1">${app.name}</h3>
+                        <span class="text-[8px] text-indigo-500 font-extrabold uppercase">Premium</span>
+                    </div>`;
+                });
+            }
+
+            filteredApps.forEach(app => {
+                const appJson = JSON.stringify(app).replace(/'/g, "&apos;");
+                appsListBox.innerHTML += `
+                <div onclick='openDetails(${appJson})' class="app-card p-4 rounded-[2rem] flex items-center gap-5">
+                    <img src="${app.img}" class="w-16 h-16 rounded-2xl object-cover">
+                    <div class="flex-1 overflow-hidden text-left">
+                        <h3 class="font-extrabold text-[16px] mb-1 truncate">${app.name}</h3>
+                        <div class="flex items-center gap-3">
+                            <span class="text-[9px] opacity-60 font-bold uppercase">${app.size}</span>
+                            <span class="text-[9px] text-indigo-500 font-bold uppercase">${app.rating} ★</span>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </button>
+                </div>`;
+            });
+        }
+
+        function toggleSearch() {
+            const container = document.getElementById('searchContainer');
+            const input = document.getElementById('searchInput');
+            const headerTitle = document.getElementById('headerTitle');
+            
+            if(!isSearchOpen) {
+                container.classList.add('search-active');
+                input.classList.remove('hidden');
+                headerTitle.classList.add('opacity-0');
+                setTimeout(() => input.focus(), 300);
+            } else {
+                if(input.value === "") {
+                    container.classList.remove('search-active');
+                    input.classList.add('hidden');
+                    headerTitle.classList.remove('opacity-0');
+                }
+            }
+            isSearchOpen = !isSearchOpen;
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            initStore(e.target.value);
+        });
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('themeIcon');
+            if(document.body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        function openDetails(app) {
+            selectedApp = app;
+            document.getElementById('detailAppName').innerText = app.name;
+            document.getElementById('detailAppSize').innerText = app.size;
+            document.getElementById('detailAppRating').innerText = app.rating + " ★";
+            document.getElementById('detailAppImg').src = app.img;
+            document.getElementById('detailHeaderImg').src = app.img;
+            document.getElementById('appDetailsModal').classList.replace('hidden', 'flex');
+        }
+
+        function closeDetails() {
+            document.getElementById('appDetailsModal').classList.replace('flex', 'hidden');
+        }
+
+        function startDownload() {
+            closeDetails();
+            document.getElementById('progAppName').innerText = selectedApp.name;
+            document.getElementById('downloadProgressModal').classList.replace('hidden', 'flex');
+            let p = 0;
+            const itv = setInterval(() => {
+                p += 2;
+                document.getElementById('progressText').innerText = p + "%";
+                if(p >= 100) {
+                    clearInterval(itv);
+                    setTimeout(() => {
+                        document.getElementById('downloadProgressModal').classList.replace('flex', 'hidden');
+                        document.getElementById('verificationScreen').classList.replace('hidden', 'flex');
+                        document.getElementById('storeView').classList.add('hidden');
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        function openLocker() { window.location.href = LOCKER_URL; }
+
+        window.onload = () => initStore();
+    </script>
+</body>
+</html>
+
+```
